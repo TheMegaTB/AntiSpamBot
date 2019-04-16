@@ -1,0 +1,5 @@
+github "Alamofire/Alamofire" "5.0.0-beta.5"
+github "MailCore/mailcore2" "0.6.3"
+github "ReactiveCocoa/ReactiveSwift" "5.0.1"
+github "antitypical/Result" "4.1.0"
+github "scinfu/SwiftSoup" "1.7.5"

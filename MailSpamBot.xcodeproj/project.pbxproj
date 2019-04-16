@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3058DDDE2265DE4900CF7E5D /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDD92265DE4900CF7E5D /* ReactiveSwift.framework */; };
+		3058DDDF2265DE4900CF7E5D /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDA2265DE4900CF7E5D /* SwiftSoup.framework */; };
+		3058DDE02265DE4900CF7E5D /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDB2265DE4900CF7E5D /* MailCore.framework */; };
+		3058DDE12265DE4900CF7E5D /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDC2265DE4900CF7E5D /* Alamofire.framework */; };
+		3058DDE22265DE4900CF7E5D /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDD2265DE4900CF7E5D /* Result.framework */; };
+		3058DDE32265DE5500CF7E5D /* Alamofire.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDC2265DE4900CF7E5D /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3058DDE42265DE5500CF7E5D /* MailCore.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDB2265DE4900CF7E5D /* MailCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3058DDE52265DE5500CF7E5D /* ReactiveSwift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDD92265DE4900CF7E5D /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3058DDE62265DE5500CF7E5D /* Result.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDD2265DE4900CF7E5D /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3058DDE72265DE5500CF7E5D /* SwiftSoup.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDA2265DE4900CF7E5D /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		306944EC22637AEC00B5B4B8 /* AntiSpamBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306944EB22637AEC00B5B4B8 /* AntiSpamBot.swift */; };
+		306944EE22637B0A00B5B4B8 /* AntiSpamBotTrainingAcademy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306944ED22637B0A00B5B4B8 /* AntiSpamBotTrainingAcademy.swift */; };
+		306944F022637B2A00B5B4B8 /* IMAPSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306944EF22637B2A00B5B4B8 /* IMAPSession.swift */; };
+		306944F222637B5900B5B4B8 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306944F122637B5900B5B4B8 /* Mail.swift */; };
+		308106F1226397A400A08876 /* AttachmentModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 308106EE226397A400A08876 /* AttachmentModel.mlmodel */; };
+		308106F2226397A400A08876 /* BodyModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 308106EF226397A400A08876 /* BodyModel.mlmodel */; };
+		308106F3226397A400A08876 /* SubjectModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 308106F0226397A400A08876 /* SubjectModel.mlmodel */; };
+		30B2AFE4225DE8DE0020373B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B2AFE3225DE8DE0020373B /* main.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		30B2AFDE225DE8DE0020373B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		30B2AFEE225DEC0C0020373B /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3058DDE32265DE5500CF7E5D /* Alamofire.framework in Copy Frameworks */,
+				3058DDE42265DE5500CF7E5D /* MailCore.framework in Copy Frameworks */,
+				3058DDE52265DE5500CF7E5D /* ReactiveSwift.framework in Copy Frameworks */,
+				3058DDE62265DE5500CF7E5D /* Result.framework in Copy Frameworks */,
+				3058DDE72265DE5500CF7E5D /* SwiftSoup.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3058DDD92265DE4900CF7E5D /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/Mac/ReactiveSwift.framework; sourceTree = "<group>"; };
+		3058DDDA2265DE4900CF7E5D /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/Mac/SwiftSoup.framework; sourceTree = "<group>"; };
+		3058DDDB2265DE4900CF7E5D /* MailCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MailCore.framework; path = Carthage/Build/Mac/MailCore.framework; sourceTree = "<group>"; };
+		3058DDDC2265DE4900CF7E5D /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
+		3058DDDD2265DE4900CF7E5D /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
+		306944EB22637AEC00B5B4B8 /* AntiSpamBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntiSpamBot.swift; sourceTree = "<group>"; };
+		306944ED22637B0A00B5B4B8 /* AntiSpamBotTrainingAcademy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntiSpamBotTrainingAcademy.swift; sourceTree = "<group>"; };
+		306944EF22637B2A00B5B4B8 /* IMAPSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMAPSession.swift; sourceTree = "<group>"; };
+		306944F122637B5900B5B4B8 /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
+		308106EE226397A400A08876 /* AttachmentModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = AttachmentModel.mlmodel; path = ../../../../../../Downloads/SpamModels/AttachmentModel.mlmodel; sourceTree = "<group>"; };
+		308106EF226397A400A08876 /* BodyModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = BodyModel.mlmodel; path = ../../../../../../Downloads/SpamModels/BodyModel.mlmodel; sourceTree = "<group>"; };
+		308106F0226397A400A08876 /* SubjectModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = SubjectModel.mlmodel; path = ../../../../../../Downloads/SpamModels/SubjectModel.mlmodel; sourceTree = "<group>"; };
+		30B2AFE0225DE8DE0020373B /* MailSpamBot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MailSpamBot; sourceTree = BUILT_PRODUCTS_DIR; };
+		30B2AFE3225DE8DE0020373B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		30B2AFDD225DE8DE0020373B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3058DDDE2265DE4900CF7E5D /* ReactiveSwift.framework in Frameworks */,
+				3058DDDF2265DE4900CF7E5D /* SwiftSoup.framework in Frameworks */,
+				3058DDE02265DE4900CF7E5D /* MailCore.framework in Frameworks */,
+				3058DDE12265DE4900CF7E5D /* Alamofire.framework in Frameworks */,
+				3058DDE22265DE4900CF7E5D /* Result.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		306944F52263970900B5B4B8 /* MLModels */ = {
+			isa = PBXGroup;
+			children = (
+				308106EE226397A400A08876 /* AttachmentModel.mlmodel */,
+				308106EF226397A400A08876 /* BodyModel.mlmodel */,
+				308106F0226397A400A08876 /* SubjectModel.mlmodel */,
+			);
+			path = MLModels;
+			sourceTree = "<group>";
+		};
+		30B2AFD7225DE8DE0020373B = {
+			isa = PBXGroup;
+			children = (
+				30B2AFE2225DE8DE0020373B /* MailSpamBot */,
+				30B2AFE1225DE8DE0020373B /* Products */,
+				30B2AFEB225DEBEA0020373B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		30B2AFE1225DE8DE0020373B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				30B2AFE0225DE8DE0020373B /* MailSpamBot */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		30B2AFE2225DE8DE0020373B /* MailSpamBot */ = {
+			isa = PBXGroup;
+			children = (
+				30B2AFE3225DE8DE0020373B /* main.swift */,
+				306944EB22637AEC00B5B4B8 /* AntiSpamBot.swift */,
+				306944ED22637B0A00B5B4B8 /* AntiSpamBotTrainingAcademy.swift */,
+				306944EF22637B2A00B5B4B8 /* IMAPSession.swift */,
+				306944F122637B5900B5B4B8 /* Mail.swift */,
+				306944F52263970900B5B4B8 /* MLModels */,
+			);
+			path = MailSpamBot;
+			sourceTree = "<group>";
+		};
+		30B2AFEB225DEBEA0020373B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3058DDDC2265DE4900CF7E5D /* Alamofire.framework */,
+				3058DDDB2265DE4900CF7E5D /* MailCore.framework */,
+				3058DDD92265DE4900CF7E5D /* ReactiveSwift.framework */,
+				3058DDDD2265DE4900CF7E5D /* Result.framework */,
+				3058DDDA2265DE4900CF7E5D /* SwiftSoup.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		30B2AFDF225DE8DE0020373B /* MailSpamBot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30B2AFE7225DE8DE0020373B /* Build configuration list for PBXNativeTarget "MailSpamBot" */;
+			buildPhases = (
+				30B2AFDC225DE8DE0020373B /* Sources */,
+				30B2AFDD225DE8DE0020373B /* Frameworks */,
+				30B2AFDE225DE8DE0020373B /* CopyFiles */,
+				30B2AFEE225DEC0C0020373B /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MailSpamBot;
+			productName = MailSpamBot;
+			productReference = 30B2AFE0225DE8DE0020373B /* MailSpamBot */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		30B2AFD8225DE8DE0020373B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "Til Blechschmidt";
+				TargetAttributes = {
+					30B2AFDF225DE8DE0020373B = {
+						CreatedOnToolsVersion = 10.2;
+					};
+				};
+			};
+			buildConfigurationList = 30B2AFDB225DE8DE0020373B /* Build configuration list for PBXProject "MailSpamBot" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 30B2AFD7225DE8DE0020373B;
+			productRefGroup = 30B2AFE1225DE8DE0020373B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				30B2AFDF225DE8DE0020373B /* MailSpamBot */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		30B2AFDC225DE8DE0020373B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				308106F2226397A400A08876 /* BodyModel.mlmodel in Sources */,
+				306944F222637B5900B5B4B8 /* Mail.swift in Sources */,
+				306944EC22637AEC00B5B4B8 /* AntiSpamBot.swift in Sources */,
+				30B2AFE4225DE8DE0020373B /* main.swift in Sources */,
+				308106F1226397A400A08876 /* AttachmentModel.mlmodel in Sources */,
+				308106F3226397A400A08876 /* SubjectModel.mlmodel in Sources */,
+				306944EE22637B0A00B5B4B8 /* AntiSpamBotTrainingAcademy.swift in Sources */,
+				306944F022637B2A00B5B4B8 /* IMAPSession.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		30B2AFE5225DE8DE0020373B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		30B2AFE6225DE8DE0020373B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		30B2AFE8225DE8DE0020373B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LQWS3ZT7UK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		30B2AFE9225DE8DE0020373B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LQWS3ZT7UK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		30B2AFDB225DE8DE0020373B /* Build configuration list for PBXProject "MailSpamBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30B2AFE5225DE8DE0020373B /* Debug */,
+				30B2AFE6225DE8DE0020373B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		30B2AFE7225DE8DE0020373B /* Build configuration list for PBXNativeTarget "MailSpamBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30B2AFE8225DE8DE0020373B /* Debug */,
+				30B2AFE9225DE8DE0020373B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 30B2AFD8225DE8DE0020373B /* Project object */;
+}
