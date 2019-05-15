@@ -10,6 +10,7 @@ import Foundation
 import ReactiveSwift
 import CreateML
 import Cocoa
+import Result
 
 class AntiSpamBotTrainingAcademy {
     var mails: [MailClassification: [MailContent]]
@@ -36,39 +37,47 @@ class AntiSpamBotTrainingAcademy {
         try encodedMails.write(to: fileURL)
     }
 
-    func addMail(ofType type: MailClassification, withContent content: MailContent) {
+    func addMail(ofType type: MailClassification, withContent content: MailContent) -> SignalProducer<(), NoError> {
+        // print("\tAdding mail:", content.subject, content.sender.address)
         let fileManager = FileManager.default
 
         let attachmentsStoragePath = storagePath.appendingPathComponent("Attachments", isDirectory: true)
-        let images = content.classifyableImages()
-
         try! fileManager.createDirectory(at: attachmentsStoragePath, withIntermediateDirectories: true, attributes: nil)
 
-        // TODO Download attachments using signal producer
-//        content.attachmentPaths = try! images.map { (image: Data) -> URL in
-//            let attachmentID = UUID()
-//            let attachmentPath = attachmentsStoragePath.appendingPathComponent(attachmentID.uuidString)
-//
-//            try image.write(to: attachmentPath)
-//
-//            return attachmentPath
-//        }
+        let images = content.classifyableImages()
 
-        mails[type]?.append(content)
+        return images
+            .flatten()
+            .map { (image: Data) -> URL in
+                let attachmentID = UUID()
+                let attachmentPath = attachmentsStoragePath.appendingPathComponent(attachmentID.uuidString)
+
+                try? image.write(to: attachmentPath)
+
+                return attachmentPath
+            }
+            .collect()
+            .map { urls in
+                content.attachmentPaths = urls
+                self.mails[type]?.append(content)
+            }
     }
 
-    func importMails(from session: IMAPSession, in folder: String, as type: MailClassification) -> SignalProducer<MailContent, IMAPSessionError> {
+    func importMails(from session: IMAPSession, in folder: String, as type: MailClassification) -> SignalProducer<(), IMAPSessionError> {
         var totalAmount = 0
         var processedAmount = 0
 
         return session.fetchHeadersForContents(ofFolder: folder)
             .on(value: { totalAmount = $0.count })
             .flatten()
-            .flatMap(.merge) { session.fetchContentOfMail(withID: $0.uid, inFolder: folder) }
-            .on(value: {
-                self.addMail(ofType: type, withContent: $0)
+            .flatMap(.concurrent(limit: 15)) { session.fetchContentOfMail(withID: $0.uid, inFolder: folder) }
+            .flatMap(.concurrent(limit: 1)) { self.addMail(ofType: type, withContent: $0) }
+            .on(value: { _ in
                 processedAmount += 1
-                print("\(type): \(processedAmount) / \(totalAmount)")
+                print("[C] \(type): \(processedAmount) / \(totalAmount)")
+            })
+            .on(completed: {
+                print("Completed2!")
             })
     }
 

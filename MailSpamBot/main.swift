@@ -14,18 +14,31 @@ let serializationPath = "/Users/themegatb/Downloads/mails.json"
 
 let args = CommandLine.arguments
 let session = IMAPSession(host: args[1], port: UInt32(args[2])!, username: args[3], password: args[4])
+let idleSession = IMAPSession(host: args[1], port: UInt32(args[2])!, username: args[3], password: args[4])
+
+let engine = RuleEngine(session: session)
+engine.rules = [
+    ExecutableBoolRule(
+        rule: KeywordRule("service@paypal.de", in: .senderAddress) && KeywordRule("mobilcom-debitel GmbH", in: .subject),
+        action: RuleAction(action: .move(to: "Rechnungen/FUNK"), flag: .read)
+    ),
+    ExecutableBoolRule(
+        rule: SpamClassificationRule(),
+        action: .moveToJunk
+    )
+]
 
 func downloadMails() {
     let academy = AntiSpamBotTrainingAcademy()
 
-    academy.importMails(from: session, in: "AntiSpamBot/Training/Spam", as: .Spam)
-        .then(academy.importMails(from: session, in: "AntiSpamBot/Training/Ham", as: .Ham))
+    academy.importMails(from: session, in: "AntiSpamBot/Training/Ham", as: .Ham)
+        .then(academy.importMails(from: session, in: "AntiSpamBot/Training/Spam", as: .Spam))
         .startWithCompleted {
             try! academy.write(to: serializationPath)
             academy.mails.keys.forEach {
                 print($0, academy.mails[$0]!.count)
             }
-    }
+        }
 
     RunLoop.current.run()
 }
@@ -92,7 +105,37 @@ func evaluate() {
     RunLoop.current.run()
 }
 
+func ruleInbox() {
+    let folder = "Inbox"
+    session.fetchHeadersForContents(ofFolder: folder)
+        .flatten()
+        .startWithResult { result in
+            if let mail = result.value {
+                engine.apply(toMailAt: (folder: folder, uid: mail.uid)).start()
+            }
+        }
+
+    RunLoop.current.run()
+}
+
 //downloadMails()
 //train()
 //printWithInbox()
-evaluate()
+//evaluate()
+//ruleInbox()
+
+let folder = "INBOX"
+idleSession.idle(on: folder).startWithResult { result in
+    if let messages = result.value {
+        messages.forEach { message in
+            print("[\(message.uid)] \(message.header.from.rfc822String() ?? "") => \(message.header.subject ?? "")")
+
+            engine.apply(toMailAt: (folder: folder, uid: message.uid)).start()
+        }
+    } else if let error = result.error {
+        print("IDLE failed.", error.localizedDescription)
+    }
+}
+
+print("IDLE listening ...")
+RunLoop.current.run()

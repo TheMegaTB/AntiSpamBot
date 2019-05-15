@@ -57,6 +57,7 @@ class MailClassificationPrediction {
     }
 
     var prediction: MailClassification? {
+        // TODO If the confidence is below a certain value (e.g. 50%) return nil
         return confidenceLevels.max { $0.value < $1.value }.flatMap { $0.key }
     }
 
@@ -121,7 +122,6 @@ class AntiSpamBot {
     }
 
     func predictBasedOnAttachments(mail: MailContent) -> ClassificationSignalProducer {
-        // TODO This does not complete. Probably because of classifyableImages()
         return mail.classifyableImages()
             .flatten()
             .flatMap(.merge) { self.imagePrediction(of: $0) }
@@ -155,13 +155,22 @@ class AntiSpamBot {
 
     func predict(mail: MailContent) -> ClassificationSignalProducer {
         let predictions: [ClassificationSignalProducer] = [
+            predictBasedOnSubject(mail: mail),
             predictBasedOnBody(mail: mail),
-            predictBasedOnAttachments(mail: mail),
-            predictBasedOnSubject(mail: mail)
+//            predictBasedOnAttachments(mail: mail),
         ]
 
+        let weights = [0.3, 0.7] // [0.2, 0.5, 0.3]
         return SignalProducer.merge(predictions)
             .collect()
-            .map { try! MailClassificationPrediction(byMerging: $0, weightedBy: [0.5, 0.3, 0.2]) }
+            .map { try! MailClassificationPrediction(byMerging: $0, weightedBy: weights) }
+    }
+}
+
+class SpamClassificationRule: BoolRule {
+    let antiSpamBot = AntiSpamBot()
+
+    func triggers(on mail: MailContent) -> SignalProducer<Bool, NoError> {
+        return antiSpamBot.predict(mail: mail).map { $0.prediction ?? .Ham == .Spam }
     }
 }

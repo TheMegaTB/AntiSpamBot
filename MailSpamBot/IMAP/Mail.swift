@@ -13,17 +13,8 @@ import ReactiveSwift
 import Result
 import Cocoa
 
-struct Constants {
-    static var session: Session = {
-        let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 10
-        configuration.timeoutIntervalForResource = 10
-
-        return Session(configuration: configuration)
-    }()
-}
-
 typealias MailID = UInt32
+typealias MailLocation = (folder: String, uid: MailID)
 
 struct MailSender: Codable {
     let displayName: String?
@@ -68,17 +59,35 @@ class MailContent: Codable {
     func classifyableImages() -> SignalProducer<[Data], NoError> {
         let minimumImageDimensions = CGFloat(500.0)
 
-        return SignalProducer(imagesLinkedInHTML())
-            .flatMap(.merge) { imageURL in
-                let request = Constants.session.request(imageURL)
+        let linkedImages = Set(imagesLinkedInHTML())
 
-                return request.responseSignalProducerIgnoringError()
-                    .filter { data in
-                        // TODO Migrate this to CoreGraphics
-                        return NSImage(data: data).flatMap {
-                            $0.size.width > minimumImageDimensions && $0.size.height > minimumImageDimensions
-                        } ?? false
-                    }
+        return SignalProducer(linkedImages)
+            .filter { (imageURL: URL) -> Bool in
+                return imageURL.scheme.flatMap { $0 == "https" || $0 == "http" } ?? false
+            }
+            .flatMap(.concurrent(limit: 15)) { (imageURL: URL) -> SignalProducer<Data, NoError> in
+
+                let sessionConfiguration = URLSessionConfiguration.ephemeral
+                sessionConfiguration.waitsForConnectivity = true
+                sessionConfiguration.timeoutIntervalForRequest = 15
+                sessionConfiguration.timeoutIntervalForResource = 30
+                let session = URLSession(configuration: sessionConfiguration)
+                let request = URLRequest(url: imageURL)
+
+                return SignalProducer { observer, _ in
+                    print("\tFetching image", imageURL)
+                    session.dataTask(with: request) { data, response, error in
+                        if let data = data {
+                            if let image = NSImage(data: data), image.size.width > minimumImageDimensions, image.size.height > minimumImageDimensions {
+                                observer.send(value: data)
+                                print("\tFetched image", imageURL)
+                            }
+                        } else {
+                            print("\tImage download failure", imageURL, error?.localizedDescription ?? "no error")
+                        }
+                        observer.sendCompleted()
+                    }.resume()
+                }
             }
             .collect()
     }
