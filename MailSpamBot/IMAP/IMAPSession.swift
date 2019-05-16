@@ -94,12 +94,27 @@ class IMAPSession {
         var latestKnownUID: MailID = 0
         var idling = true
 
+        var timer: Timer?
+        var idleOperation: MCOIMAPIdleOperation?
+
+        let timerClosure: (Timer) -> Void = { _ in
+            print("IDLE session expired")
+            idleOperation?.interruptIdle()
+            semaphore.signal()
+        }
+
+        let startNextIDLEOperation = {
+            timer?.invalidate()
+            semaphore.signal()
+            timer = Timer.scheduledTimer(withTimeInterval: 60 * 60 * 20, repeats: false, block: timerClosure)
+        }
+
         self.fetchHeadersForContents(ofFolder: folder).startWithResult { result in
             if let messages = result.value {
                 latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
             }
 
-            semaphore.signal()
+            startNextIDLEOperation()
         }
 
         return SignalProducer { observer, _ in
@@ -108,8 +123,8 @@ class IMAPSession {
                     semaphore.wait()
 
                     // TODO Remove force unwrap
-                    let op = self.session.idleOperation(withFolder: folder, lastKnownUID: latestKnownUID)!
-                    op.start { error in
+                    idleOperation = self.session.idleOperation(withFolder: folder, lastKnownUID: latestKnownUID)!
+                    idleOperation?.start { error in
                         if error != nil {
                             idling = false
                             semaphore.signal()
@@ -125,7 +140,8 @@ class IMAPSession {
                                 latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
                             }
 
-                            semaphore.signal()
+                            startNextIDLEOperation()
+//                            semaphore.signal()
                         }
                     }
                 }
