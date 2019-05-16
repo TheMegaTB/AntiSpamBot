@@ -20,10 +20,13 @@ let engine = RuleEngine(session: session)
 
 let invoiceRules = [
     ExecutableSortRule(from: "no_reply@email.apple.com", subjectContains: "Your invoice from Apple", moveTo: "Rechnungen/Apple"),
-    ExecutableSortRule(from: "service@paypal.de", subjectContains: "mobilcom-debitel GmbH", moveTo: "Rechnungen/FUNK"),
     ExecutableSortRule(from: "@amazon.de", subjectContains: "Your Amazon.de order of", moveTo: "Rechnungen/Amazon"),
     ExecutableSortRule(from: "mail@netcup.de", subjectContains: "Ihre Rechnung", moveTo: "Rechnungen/Hosting/Netcup"),
     ExecutableSortRule(from: "support@migadu.com", subjectContains: "Receipt", moveTo: "Rechnungen/Hosting/Migadu"),
+    ExecutableBoolRule(
+        rule: SortRule(from: "service@paypal.de", subjectContains: "mobilcom-debitel GmbH"),
+        action: RuleAction(action: .move(to: "Rechnungen/FUNK"), flag: .read)
+    )
 ]
 
 let spamRules = [
