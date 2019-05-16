@@ -14,9 +14,14 @@ protocol BoolRule {
     func triggers(on mail: MailContent) -> SignalProducer<Bool, NoError>
 }
 
-struct ExecutableBoolRule: ExecutableRule {
+class ExecutableBoolRule: ExecutableRule {
     let rule: BoolRule
     let action: RuleAction
+
+    init(rule: BoolRule, action: RuleAction) {
+        self.rule = rule
+        self.action = action
+    }
 
     func determineAction(on mail: MailContent) -> SignalProducer<RuleAction, NoError> {
         return rule.triggers(on: mail).filterMap {

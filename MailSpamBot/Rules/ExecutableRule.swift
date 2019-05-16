@@ -31,6 +31,19 @@ struct RuleAction {
     static let markAsRead = RuleAction(action: .keep, flag: .read)
     static let moveToJunk = RuleAction(action: .junk, flag: [])
     static let trash = RuleAction(action: .trash, flag: [])
+
+    init(action: MailAction, flag: MailFlags) {
+        self.action = action
+        self.flag = flag
+    }
+
+    init(_ action: MailAction) {
+        self.init(action: action, flag: [])
+    }
+
+    init(_ flag: MailFlags) {
+        self.init(action: .keep, flag: flag)
+    }
 }
 
 protocol ExecutableRule {

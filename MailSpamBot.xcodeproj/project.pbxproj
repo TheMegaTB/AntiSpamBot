@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		302857C0228D639C00A24010 /* SortRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302857BF228D639C00A24010 /* SortRule.swift */; };
 		3058DDDE2265DE4900CF7E5D /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDD92265DE4900CF7E5D /* ReactiveSwift.framework */; };
 		3058DDDF2265DE4900CF7E5D /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDA2265DE4900CF7E5D /* SwiftSoup.framework */; };
 		3058DDE02265DE4900CF7E5D /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDB2265DE4900CF7E5D /* MailCore.framework */; };
@@ -59,6 +60,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		302857BF228D639C00A24010 /* SortRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortRule.swift; sourceTree = "<group>"; };
 		3058DDD92265DE4900CF7E5D /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/Mac/ReactiveSwift.framework; sourceTree = "<group>"; };
 		3058DDDA2265DE4900CF7E5D /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/Mac/SwiftSoup.framework; sourceTree = "<group>"; };
 		3058DDDB2265DE4900CF7E5D /* MailCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MailCore.framework; path = Carthage/Build/Mac/MailCore.framework; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				307CC759228B1CAA008DA24D /* ExecutableRule.swift */,
 				307CC766228B5A4F008DA24D /* ExecutableBoolRule.swift */,
 				307CC764228B28FC008DA24D /* KeywordRule.swift */,
+				302857BF228D639C00A24010 /* SortRule.swift */,
 				307CC757228B1C90008DA24D /* AntiSpamRule */,
 			);
 			path = Rules;
@@ -238,6 +241,7 @@
 				30807E26228CCEA2009FA090 /* SubjectModel.mlmodel in Sources */,
 				307CC765228B28FC008DA24D /* KeywordRule.swift in Sources */,
 				306944F222637B5900B5B4B8 /* Mail.swift in Sources */,
+				302857C0228D639C00A24010 /* SortRule.swift in Sources */,
 				306944EC22637AEC00B5B4B8 /* AntiSpamBot.swift in Sources */,
 				307CC75A228B1CAA008DA24D /* ExecutableRule.swift in Sources */,
 				30B2AFE4225DE8DE0020373B /* main.swift in Sources */,

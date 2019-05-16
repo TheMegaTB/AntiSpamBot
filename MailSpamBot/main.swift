@@ -17,16 +17,23 @@ let session = IMAPSession(host: args[1], port: UInt32(args[2])!, username: args[
 let idleSession = IMAPSession(host: args[1], port: UInt32(args[2])!, username: args[3], password: args[4])
 
 let engine = RuleEngine(session: session)
-engine.rules = [
-    ExecutableBoolRule(
-        rule: KeywordRule("service@paypal.de", in: .senderAddress) && KeywordRule("mobilcom-debitel GmbH", in: .subject),
-        action: RuleAction(action: .move(to: "Rechnungen/FUNK"), flag: .read)
-    ),
+
+let invoiceRules = [
+    ExecutableSortRule(from: "no_reply@email.apple.com", subjectContains: "Your invoice from Apple", moveTo: "Rechnungen/Apple"),
+    ExecutableSortRule(from: "service@paypal.de", subjectContains: "mobilcom-debitel GmbH", moveTo: "Rechnungen/FUNK"),
+    ExecutableSortRule(from: "@amazon.de", subjectContains: "Your Amazon.de order of", moveTo: "Rechnungen/Amazon"),
+    ExecutableSortRule(from: "mail@netcup.de", subjectContains: "Ihre Rechnung", moveTo: "Rechnungen/Hosting/Netcup"),
+    ExecutableSortRule(from: "support@migadu.com", subjectContains: "Receipt", moveTo: "Rechnungen/Hosting/Migadu"),
+]
+
+let spamRules = [
     ExecutableBoolRule(
         rule: SpamClassificationRule(),
         action: .moveToJunk
     )
 ]
+
+engine.rules = invoiceRules + spamRules
 
 func downloadMails() {
     let academy = AntiSpamBotTrainingAcademy()
