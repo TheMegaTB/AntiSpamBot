@@ -17,6 +17,20 @@ enum IMAPSessionError: Error {
 class IMAPSession {
     let session: MCOIMAPSession
 
+    private func appendToLog(_ string: String) {
+        appendToLog(string.data(using: .utf8))
+    }
+
+    private func appendToLog(_ data: Data?) {
+        do {
+            let dir: URL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).last! as URL
+            let url = dir.appendingPathComponent("mailSpamBotLog.txt")
+            try data?.append(fileURL: url)
+        } catch {
+            print("Could not write to file")
+        }
+    }
+
     init(host: String, port: UInt32, username: String, password: String) {
         session = MCOIMAPSession()
         session.hostname = host
@@ -25,10 +39,7 @@ class IMAPSession {
         session.password = password
         session.connectionType = .TLS
         session.dispatchQueue = DispatchQueue.global()
-
-//        session.connectionLogger = { _, _, data in
-//            print(String(data: data!, encoding: .utf8)!)
-//        }
+        session.connectionLogger = { self.appendToLog($2) }
     }
 
     func listFolders() -> SignalProducer<[MCOIMAPFolder], IMAPSessionError> {
@@ -98,7 +109,7 @@ class IMAPSession {
         var idleOperation: MCOIMAPIdleOperation?
 
         let timerClosure: (Timer) -> Void = { _ in
-            print("IDLE session expired")
+            self.appendToLog("[IDLE] Session expired")
             idleOperation?.interruptIdle()
             semaphore.signal()
         }
@@ -122,6 +133,8 @@ class IMAPSession {
                 while idling {
                     semaphore.wait()
 
+                    self.appendToLog("[IDLE] Session started")
+
                     // TODO Remove force unwrap
                     idleOperation = self.session.idleOperation(withFolder: folder, lastKnownUID: latestKnownUID)!
                     idleOperation?.start { error in
@@ -136,8 +149,11 @@ class IMAPSession {
 
                         self.fetchHeadersForContents(ofFolder: folder, uids: newMailIndexSet!).startWithResult { result in
                             if let messages = result.value {
+                                self.appendToLog("[IDLE] Received \(messages.count) messages")
                                 observer.send(value: messages)
                                 latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
+                            } else {
+                                self.appendToLog("[IDLE] Received notify but no new messages")
                             }
 
                             startNextIDLEOperation()
@@ -191,6 +207,21 @@ class IMAPSession {
                 observer.send(value: mail)
                 observer.sendCompleted()
             }
+        }
+    }
+}
+
+extension Data {
+    func append(fileURL: URL) throws {
+        if let fileHandle = FileHandle(forWritingAtPath: fileURL.path) {
+            defer {
+                fileHandle.closeFile()
+            }
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(self)
+        }
+        else {
+            try write(to: fileURL, options: .atomic)
         }
     }
 }
