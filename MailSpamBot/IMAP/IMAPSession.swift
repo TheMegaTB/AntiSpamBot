@@ -106,7 +106,7 @@ class IMAPSession {
         let startNextIDLEOperation = {
             timer?.invalidate()
             semaphore.signal()
-            timer = Timer.scheduledTimer(withTimeInterval: 60 * 20, repeats: false, block: timerClosure)
+            timer = Timer.scheduledTimer(withTimeInterval: 60 * 5, repeats: false, block: timerClosure)
         }
 
         self.fetchHeadersForContents(ofFolder: folder).startWithResult { result in
