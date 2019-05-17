@@ -112,34 +112,34 @@ class AntiSpamBotTrainingAcademy {
         print("Accuracy on evaluation data:\t", evaluationAccuracy)
     }
 
-    private func trainImages() throws -> MLImageClassifier {
-        let urlsByCategory: [String: [URL]] = mails.reduce(into: [:]) { (result, entry) in
-            let (key, value) = entry
-
-            if result[key.rawValue] == nil {
-                result[key.rawValue] = []
-            }
-
-            let imageURLs = value.flatMap { $0.attachmentPaths }
-
-            result[key.rawValue]?.append(contentsOf: imageURLs)
-        }
-
-        let shuffledURLs = urlsByCategory.mapValues { $0.shuffled() }
-        let trainingDataSize = 0.8
-        let trainingData = shuffledURLs.mapValues { Array($0[..<(Int(Double($0.count) * trainingDataSize))]) }
-        let evaluationData = shuffledURLs.mapValues { Array($0[(Int(Double($0.count) * trainingDataSize))...]) }
-
-        let classifier = try MLImageClassifier(trainingData: trainingData)
-        let evaluation = classifier.evaluation(on: evaluationData)
-
-        print("\n\n--- Image classifier:")
-        print("Accuracy on training data:\t\t", (1.0 - classifier.trainingMetrics.classificationError) * 100)
-        print("Accuracy on validation data:\t", (1.0 - classifier.validationMetrics.classificationError) * 100)
-        print("Accuracy on evaluation data:\t", (1.0 - evaluation.classificationError) * 100)
-
-        return classifier
-    }
+//    private func trainImages() throws -> MLImageClassifier {
+//        let urlsByCategory: [String: [URL]] = mails.reduce(into: [:]) { (result, entry) in
+//            let (key, value) = entry
+//
+//            if result[key.rawValue] == nil {
+//                result[key.rawValue] = []
+//            }
+//
+//            let imageURLs = value.flatMap { $0.attachmentPaths }
+//
+//            result[key.rawValue]?.append(contentsOf: imageURLs)
+//        }
+//
+//        let shuffledURLs = urlsByCategory.mapValues { $0.shuffled() }
+//        let trainingDataSize = 0.8
+//        let trainingData = shuffledURLs.mapValues { Array($0[..<(Int(Double($0.count) * trainingDataSize))]) }
+//        let evaluationData = shuffledURLs.mapValues { Array($0[(Int(Double($0.count) * trainingDataSize))...]) }
+//
+//        let classifier = try MLImageClassifier(trainingData: trainingData)
+//        let evaluation = classifier.evaluation(on: evaluationData)
+//
+//        print("\n\n--- Image classifier:")
+//        print("Accuracy on training data:\t\t", (1.0 - classifier.trainingMetrics.classificationError) * 100)
+//        print("Accuracy on validation data:\t", (1.0 - classifier.validationMetrics.classificationError) * 100)
+//        print("Accuracy on evaluation data:\t", (1.0 - evaluation.classificationError) * 100)
+//
+//        return classifier
+//    }
 
     func train() throws {
         let (textTrainingData, textTestingData) = try prepareTextTrainingData().randomSplit(by: 0.8, seed: 5)
@@ -147,7 +147,7 @@ class AntiSpamBotTrainingAcademy {
         let bodyClassifier = try MLTextClassifier(trainingData: textTrainingData, textColumn: "Content", labelColumn: "Type")
         let subjectClassifier = try MLTextClassifier(trainingData: textTrainingData, textColumn: "Subject", labelColumn: "Type")
 
-        let imageClassifier = try trainImages()
+//        let imageClassifier = try trainImages()
 
         print("\n\n--- Subject classifier:")
         printAccuracy(of: subjectClassifier, with: textTestingData)
@@ -160,6 +160,6 @@ class AntiSpamBotTrainingAcademy {
 
         try bodyClassifier.write(to: mlModelPath.appendingPathComponent("BodyModel.mlmodel"), metadata: classifierMetadata)
         try subjectClassifier.write(to: mlModelPath.appendingPathComponent("SubjectModel.mlmodel"), metadata: classifierMetadata)
-        try imageClassifier.write(to: mlModelPath.appendingPathComponent("AttachmentModel.mlmodel"), metadata: classifierMetadata)
+//        try imageClassifier.write(to: mlModelPath.appendingPathComponent("AttachmentModel.mlmodel"), metadata: classifierMetadata)
     }
 }

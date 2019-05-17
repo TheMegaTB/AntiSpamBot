@@ -57,39 +57,43 @@ class MailContent: Codable {
     }
 
     func classifyableImages() -> SignalProducer<[Data], NoError> {
-        let minimumImageDimensions = CGFloat(500.0)
+        // In order to prevent downloading of images which most likely contain tracking links this function will return
+        // nothing for now until needed (e.g. for evaluation whether or not this actually takes place on a non-private inbox)
+        return SignalProducer(value: [])
 
-        let linkedImages = Set(imagesLinkedInHTML())
-
-        return SignalProducer(linkedImages)
-            .filter { (imageURL: URL) -> Bool in
-                return imageURL.scheme.flatMap { $0 == "https" || $0 == "http" } ?? false
-            }
-            .flatMap(.concurrent(limit: 15)) { (imageURL: URL) -> SignalProducer<Data, NoError> in
-
-                let sessionConfiguration = URLSessionConfiguration.ephemeral
-                sessionConfiguration.waitsForConnectivity = true
-                sessionConfiguration.timeoutIntervalForRequest = 15
-                sessionConfiguration.timeoutIntervalForResource = 30
-                let session = URLSession(configuration: sessionConfiguration)
-                let request = URLRequest(url: imageURL)
-
-                return SignalProducer { observer, _ in
-                    print("\tFetching image", imageURL)
-                    session.dataTask(with: request) { data, response, error in
-                        if let data = data {
-                            if let image = NSImage(data: data), image.size.width > minimumImageDimensions, image.size.height > minimumImageDimensions {
-                                observer.send(value: data)
-                                print("\tFetched image", imageURL)
-                            }
-                        } else {
-                            print("\tImage download failure", imageURL, error?.localizedDescription ?? "no error")
-                        }
-                        observer.sendCompleted()
-                    }.resume()
-                }
-            }
-            .collect()
+//        let minimumImageDimensions = CGFloat(500.0)
+//
+//        let linkedImages = Set(imagesLinkedInHTML())
+//
+//        return SignalProducer(linkedImages)
+//            .filter { (imageURL: URL) -> Bool in
+//                return imageURL.scheme.flatMap { $0 == "https" || $0 == "http" } ?? false
+//            }
+//            .flatMap(.concurrent(limit: 15)) { (imageURL: URL) -> SignalProducer<Data, NoError> in
+//
+//                let sessionConfiguration = URLSessionConfiguration.ephemeral
+//                sessionConfiguration.waitsForConnectivity = true
+//                sessionConfiguration.timeoutIntervalForRequest = 15
+//                sessionConfiguration.timeoutIntervalForResource = 30
+//                let session = URLSession(configuration: sessionConfiguration)
+//                let request = URLRequest(url: imageURL)
+//
+//                return SignalProducer { observer, _ in
+//                    print("\tFetching image", imageURL)
+//                    session.dataTask(with: request) { data, response, error in
+//                        if let data = data {
+//                            if let image = NSImage(data: data), image.size.width > minimumImageDimensions, image.size.height > minimumImageDimensions {
+//                                observer.send(value: data)
+//                                print("\tFetched image", imageURL)
+//                            }
+//                        } else {
+//                            print("\tImage download failure", imageURL, error?.localizedDescription ?? "no error")
+//                        }
+//                        observer.sendCompleted()
+//                    }.resume()
+//                }
+//            }
+//            .collect()
     }
 }
 
