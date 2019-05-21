@@ -10,18 +10,7 @@ import Foundation
 import Vision
 import ReactiveSwift
 import Result
-
-enum MailClassification: String, Codable, CustomDebugStringConvertible {
-    var debugDescription: String { return rawValue }
-
-    case Spam
-    //    case Newsletter
-    //    case Acknowledged
-    //    case Important
-    case Ham
-
-    static let variants: [MailClassification] = [.Spam, .Ham] // [.Spam, .Newsletter, .Acknowledged, .Important]
-}
+import IMAP_API
 
 class MailClassificationPrediction {
     static let empty = MailClassificationPrediction(confidenceLevels: [:])

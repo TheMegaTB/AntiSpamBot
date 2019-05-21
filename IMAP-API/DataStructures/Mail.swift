@@ -13,23 +13,35 @@ import ReactiveSwift
 import Result
 import Cocoa
 
-typealias MailID = UInt32
-typealias MailLocation = (folder: String, uid: MailID)
+public enum MailClassification: String, Codable, CustomDebugStringConvertible {
+    public var debugDescription: String { return rawValue }
 
-struct MailSender: Codable {
-    let displayName: String?
-    let address: String?
+    case Spam
+    //    case Newsletter
+    //    case Acknowledged
+    //    case Important
+    case Ham
+
+    public static let variants: [MailClassification] = [.Spam, .Ham] // [.Spam, .Newsletter, .Acknowledged, .Important]
 }
 
-class MailContent: Codable {
-    let subject: String?
-    let body: String?
-    let htmlBody: String?
-    let sender: MailSender
+public typealias MailID = UInt32
+public typealias MailLocation = (folder: String, uid: MailID)
 
-    var attachmentPaths: [URL]
+public struct MailSender: Codable {
+    public let displayName: String?
+    public let address: String?
+}
 
-    init(subject: String?, body: String?, htmlBody: String?, sender: MailSender, attachmentPaths: [URL] = []) {
+public class MailContent: Codable {
+    public let subject: String?
+    public let body: String?
+    public let htmlBody: String?
+    public let sender: MailSender
+
+    public var attachmentPaths: [URL]
+
+    public init(subject: String?, body: String?, htmlBody: String?, sender: MailSender, attachmentPaths: [URL] = []) {
         self.subject = subject
         self.body = body
         self.htmlBody = htmlBody
@@ -37,7 +49,7 @@ class MailContent: Codable {
         self.attachmentPaths = attachmentPaths
     }
 
-    func imagesLinkedInHTML() -> [URL] {
+    public func imagesLinkedInHTML() -> [URL] {
         guard let htmlBody = self.htmlBody else {
             return []
         }
@@ -56,7 +68,7 @@ class MailContent: Codable {
         }
     }
 
-    func classifyableImages() -> SignalProducer<[Data], NoError> {
+    public func classifyableImages() -> SignalProducer<[Data], NoError> {
         // In order to prevent downloading of images which most likely contain tracking links this function will return
         // nothing for now until needed (e.g. for evaluation whether or not this actually takes place on a non-private inbox)
         return SignalProducer(value: [])
@@ -98,7 +110,7 @@ class MailContent: Codable {
 }
 
 extension DataRequest {
-    func responseSignalProducerIgnoringError() -> SignalProducer<Data, NoError> {
+    private func responseSignalProducerIgnoringError() -> SignalProducer<Data, NoError> {
         return SignalProducer { observer, lifetime in
             self.response { response in
                 if let data = response.value ?? nil {

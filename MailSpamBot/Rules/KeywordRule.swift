@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 import Result
+import IMAP_API
 
 struct KeywordLocation: OptionSet {
     let rawValue: UInt8

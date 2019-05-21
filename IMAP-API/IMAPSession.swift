@@ -10,18 +10,22 @@ import Foundation
 import MailCore
 import ReactiveSwift
 
-enum IMAPSessionError: Error {
+public enum IMAPSessionError: Error {
     case unknownError
 }
 
-class IMAPSession {
-    let session: MCOIMAPSession
+public typealias IMAPSessionParameters = (host: String, port: UInt32, username: String, password: String)
 
-    private func appendToLog(_ string: String) {
+public class IMAPSession {
+    private var session: MCOIMAPSession
+    private let sessionParameters: IMAPSessionParameters
+
+    private static func appendToLog(_ string: String) {
+        print("[LOG] \(string)")
         appendToLog(string.data(using: .utf8))
     }
 
-    private func appendToLog(_ data: Data?) {
+    private static func appendToLog(_ data: Data?) {
         do {
             let dir: URL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).last! as URL
             let url = dir.appendingPathComponent("mailSpamBotLog.txt")
@@ -31,18 +35,25 @@ class IMAPSession {
         }
     }
 
-    init(host: String, port: UInt32, username: String, password: String) {
-        session = MCOIMAPSession()
-        session.hostname = host
-        session.port = port
-        session.username = username
-        session.password = password
+    private static func createSession(sessionParameters p: IMAPSessionParameters) -> MCOIMAPSession {
+        let session = MCOIMAPSession()
+        session.hostname = p.host
+        session.port = p.port
+        session.username = p.username
+        session.password = p.password
         session.connectionType = .TLS
         session.dispatchQueue = DispatchQueue.global()
-        session.connectionLogger = { self.appendToLog($2) }
+        session.connectionLogger = { IMAPSession.appendToLog($2) }
+
+        return session
     }
 
-    func listFolders() -> SignalProducer<[MCOIMAPFolder], IMAPSessionError> {
+    public init(sessionParameters: IMAPSessionParameters) {
+        self.sessionParameters = sessionParameters
+        self.session = IMAPSession.createSession(sessionParameters: sessionParameters)
+    }
+
+    public func listFolders() -> SignalProducer<[MCOIMAPFolder], IMAPSessionError> {
         guard let listFoldersOperation = session.fetchAllFoldersOperation() else {
             return SignalProducer(error: IMAPSessionError.unknownError)
         }
@@ -61,7 +72,7 @@ class IMAPSession {
         }
     }
 
-    func add(flags: MCOMessageFlag, toMessage withID: MailID, in folder: String) -> SignalProducer<(), IMAPSessionError> {
+    public func add(flags: MCOMessageFlag, toMessage withID: MailID, in folder: String) -> SignalProducer<(), IMAPSessionError> {
         let uidSet = MCOIndexSet(index: UInt64(withID))
         guard let flagOperation = session.storeFlagsOperation(withFolder: folder, uids: uidSet, kind: .add, flags: flags) else {
             return SignalProducer(error: IMAPSessionError.unknownError)
@@ -80,7 +91,7 @@ class IMAPSession {
         }
     }
 
-    func move(message withID: MailID, from folder: String, to destinationFolder: String) -> SignalProducer<(), IMAPSessionError> {
+    public func move(message withID: MailID, from folder: String, to destinationFolder: String) -> SignalProducer<(), IMAPSessionError> {
         let uidSet = MCOIndexSet(index: UInt64(withID))
 
         guard let moveOperation = session.moveMessagesOperation(withFolder: folder, uids: uidSet, destFolder: destinationFolder) else {
@@ -100,7 +111,7 @@ class IMAPSession {
         }
     }
 
-    func idle(on folder: String) -> SignalProducer<[MCOIMAPMessage], IMAPSessionError> {
+    public func idle(on folder: String) -> SignalProducer<[MCOIMAPMessage], IMAPSessionError> {
         let semaphore = DispatchSemaphore(value: 0)
         var latestKnownUID: MailID = 0
         var idling = true
@@ -108,13 +119,19 @@ class IMAPSession {
         var timer: Timer?
         var idleOperation: MCOIMAPIdleOperation?
 
+        var startNextIDLEOperation: (() -> ())! = nil
+
         let timerClosure: (Timer) -> Void = { _ in
-            self.appendToLog("[IDLE] Session expired")
+            IMAPSession.appendToLog("[IDLE] Session expired")
             idleOperation?.interruptIdle()
-            semaphore.signal()
+//            self.session.disconnectOperation()!.start { _ in
+//                self.session = IMAPSession.createSession(sessionParameters: self.sessionParameters)
+//                startNextIDLEOperation()
+//            }
+            startNextIDLEOperation?()
         }
 
-        let startNextIDLEOperation = {
+        startNextIDLEOperation = {
             timer?.invalidate()
             semaphore.signal()
             timer = Timer.scheduledTimer(withTimeInterval: 60 * 5, repeats: false, block: timerClosure)
@@ -125,7 +142,7 @@ class IMAPSession {
                 latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
             }
 
-            startNextIDLEOperation()
+            startNextIDLEOperation!()
         }
 
         return SignalProducer { observer, _ in
@@ -133,7 +150,7 @@ class IMAPSession {
                 while idling {
                     semaphore.wait()
 
-                    self.appendToLog("[IDLE] Session started")
+                    IMAPSession.appendToLog("[IDLE] Session started")
 
                     // TODO Remove force unwrap
                     idleOperation = self.session.idleOperation(withFolder: folder, lastKnownUID: latestKnownUID)!
@@ -149,14 +166,14 @@ class IMAPSession {
 
                         self.fetchHeadersForContents(ofFolder: folder, uids: newMailIndexSet!).startWithResult { result in
                             if let messages = result.value {
-                                self.appendToLog("[IDLE] Received \(messages.count) messages")
+                                IMAPSession.appendToLog("[IDLE] Received \(messages.count) messages")
                                 observer.send(value: messages)
                                 latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
                             } else {
-                                self.appendToLog("[IDLE] Received notify but no new messages")
+                                IMAPSession.appendToLog("[IDLE] Received notify but no new messages")
                             }
 
-                            startNextIDLEOperation()
+                            startNextIDLEOperation!()
 //                            semaphore.signal()
                         }
                     }
@@ -165,7 +182,7 @@ class IMAPSession {
         }
     }
 
-    func fetchHeadersForContents(ofFolder folder: String, uids: MCOIndexSet = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))) -> SignalProducer<[MCOIMAPMessage], IMAPSessionError> {
+    public func fetchHeadersForContents(ofFolder folder: String, uids: MCOIndexSet = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))) -> SignalProducer<[MCOIMAPMessage], IMAPSessionError> {
         let requestKind = MCOIMAPMessagesRequestKind.headers
 
         guard let fetchOperation = session.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids) else {
@@ -185,27 +202,24 @@ class IMAPSession {
         }
     }
 
-    func fetchContentOfMail(withID uid: MailID, inFolder folder: String) -> SignalProducer<MailContent, IMAPSessionError> {
+    public func fetchContentOfMail(withID uid: MailID, inFolder folder: String) -> SignalProducer<MailContent, IMAPSessionError> {
         guard let dataOperation = session.fetchMessageOperation(withFolder: folder, uid: uid) else {
             return SignalProducer(error: .unknownError)
         }
 
         return SignalProducer { observer, lifetime in
             dataOperation.start { (err, data) -> Void in
-                guard let parser = MCOMessageParser(data: data) else {
-                    observer.send(error: .unknownError)
-                    return
-                }
+                autoreleasepool {
+                    guard let parser = MCOMessageParser(data: data) else {
+                        observer.send(error: .unknownError)
+                        return
+                    }
 
-                let sender = MailSender(displayName: parser.header.from?.displayName, address: parser.header.from?.mailbox)
-                let mail = MailContent(
-                    subject: parser.header.subject,
-                    body: parser.plainTextBodyRendering(),
-                    htmlBody: parser.htmlBodyRendering(),
-                    sender: sender
-                )
-                observer.send(value: mail)
-                observer.sendCompleted()
+                    let mail = MailContent(fromParser: parser)
+
+                    observer.send(value: mail)
+                    observer.sendCompleted()
+                }
             }
         }
     }

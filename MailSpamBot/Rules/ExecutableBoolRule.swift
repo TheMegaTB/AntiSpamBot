@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 import Result
+import IMAP_API
 
 protocol BoolRule {
     func triggers(on mail: MailContent) -> SignalProducer<Bool, NoError>

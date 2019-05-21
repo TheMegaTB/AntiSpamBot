@@ -11,6 +11,7 @@ import ReactiveSwift
 import CreateML
 import Cocoa
 import Result
+import IMAP_API
 
 class AntiSpamBotTrainingAcademy {
     var mails: [MailClassification: [MailContent]]
