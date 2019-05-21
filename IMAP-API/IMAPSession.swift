@@ -124,6 +124,7 @@ public class IMAPSession {
         let timerClosure: (Timer) -> Void = { _ in
             IMAPSession.appendToLog("[IDLE] Session expired")
             idleOperation?.interruptIdle()
+            idleOperation?.cancel()
 //            self.session.disconnectOperation()!.start { _ in
 //                self.session = IMAPSession.createSession(sessionParameters: self.sessionParameters)
 //                startNextIDLEOperation()

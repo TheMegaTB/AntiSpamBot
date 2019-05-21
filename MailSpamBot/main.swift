@@ -127,8 +127,6 @@ func ruleInbox() {
                 engine.apply(toMailAt: (folder: folder, uid: mail.uid)).start()
             }
         }
-
-    RunLoop.current.run()
 }
 
 func runIdleDaemon() {
@@ -153,7 +151,7 @@ func runIdleDaemon() {
 //train()
 //printWithInbox()
 //evaluate()
-//ruleInbox()
+ruleInbox()
 runIdleDaemon()
 
 //let mailData = try! Data(contentsOf: URL(fileURLWithPath: "/Users/themegatb/Downloads/spamDL/2019/05/1557701100.32628_77.txt"))
