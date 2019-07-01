@@ -24,9 +24,9 @@
 		307CC765228B28FC008DA24D /* KeywordRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307CC764228B28FC008DA24D /* KeywordRule.swift */; };
 		307CC767228B5A4F008DA24D /* ExecutableBoolRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307CC766228B5A4F008DA24D /* ExecutableBoolRule.swift */; };
 		30807E28228CCEA2009FA090 /* AttachmentModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 30807E25228CCEA2009FA090 /* AttachmentModel.mlmodel */; };
-		30A8CF802293F0A5008DA5A5 /* SubjectModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 30A8CF7F2293F0A5008DA5A5 /* SubjectModel.mlmodel */; };
-		30A8CF822293F0AD008DA5A5 /* BodyModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 30A8CF812293F0AD008DA5A5 /* BodyModel.mlmodel */; };
 		30B2AFE4225DE8DE0020373B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B2AFE3225DE8DE0020373B /* main.swift */; };
+		30D48DA722CA29FE003C135C /* SubjectModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 30D48DA522CA29FE003C135C /* SubjectModel.mlmodel */; };
+		30D48DA822CA29FE003C135C /* BodyModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 30D48DA622CA29FE003C135C /* BodyModel.mlmodel */; };
 		30EC86B5228F618800825866 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EC86B4228F618800825866 /* main.swift */; };
 		30EC86B9228F618C00825866 /* MailWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EC86AC228F5F4100825866 /* MailWriter.swift */; };
 		30EC86BB228F61BD00825866 /* MailCore.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 3058DDDB2265DE4900CF7E5D /* MailCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -150,10 +150,10 @@
 		307CC764228B28FC008DA24D /* KeywordRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordRule.swift; sourceTree = "<group>"; };
 		307CC766228B5A4F008DA24D /* ExecutableBoolRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableBoolRule.swift; sourceTree = "<group>"; };
 		30807E25228CCEA2009FA090 /* AttachmentModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = AttachmentModel.mlmodel; sourceTree = "<group>"; };
-		30A8CF7F2293F0A5008DA5A5 /* SubjectModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SubjectModel.mlmodel; sourceTree = "<group>"; };
-		30A8CF812293F0AD008DA5A5 /* BodyModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = BodyModel.mlmodel; sourceTree = "<group>"; };
 		30B2AFE0225DE8DE0020373B /* MailSpamBot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MailSpamBot; sourceTree = BUILT_PRODUCTS_DIR; };
 		30B2AFE3225DE8DE0020373B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		30D48DA522CA29FE003C135C /* SubjectModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SubjectModel.mlmodel; sourceTree = "<group>"; };
+		30D48DA622CA29FE003C135C /* BodyModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = BodyModel.mlmodel; sourceTree = "<group>"; };
 		30EC86AA228F45FD00825866 /* Mail+RFCParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mail+RFCParser.swift"; sourceTree = "<group>"; };
 		30EC86AC228F5F4100825866 /* MailWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailWriter.swift; sourceTree = "<group>"; };
 		30EC86B2228F618800825866 /* DataPreparationTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataPreparationTool; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,8 +220,8 @@
 		306944F52263970900B5B4B8 /* MLModels */ = {
 			isa = PBXGroup;
 			children = (
-				30A8CF7F2293F0A5008DA5A5 /* SubjectModel.mlmodel */,
-				30A8CF812293F0AD008DA5A5 /* BodyModel.mlmodel */,
+				30D48DA622CA29FE003C135C /* BodyModel.mlmodel */,
+				30D48DA522CA29FE003C135C /* SubjectModel.mlmodel */,
 				30807E25228CCEA2009FA090 /* AttachmentModel.mlmodel */,
 			);
 			path = MLModels;
@@ -496,13 +496,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30A8CF802293F0A5008DA5A5 /* SubjectModel.mlmodel in Sources */,
+				30D48DA722CA29FE003C135C /* SubjectModel.mlmodel in Sources */,
 				307CC763228B1FD8008DA24D /* RuleEngine.swift in Sources */,
 				307CC765228B28FC008DA24D /* KeywordRule.swift in Sources */,
 				302857C0228D639C00A24010 /* SortRule.swift in Sources */,
 				306944EC22637AEC00B5B4B8 /* AntiSpamBot.swift in Sources */,
 				307CC75A228B1CAA008DA24D /* ExecutableRule.swift in Sources */,
-				30A8CF822293F0AD008DA5A5 /* BodyModel.mlmodel in Sources */,
+				30D48DA822CA29FE003C135C /* BodyModel.mlmodel in Sources */,
 				30B2AFE4225DE8DE0020373B /* main.swift in Sources */,
 				307CC767228B5A4F008DA24D /* ExecutableBoolRule.swift in Sources */,
 				30807E28228CCEA2009FA090 /* AttachmentModel.mlmodel in Sources */,
