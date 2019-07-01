@@ -169,7 +169,8 @@ public class IMAPSession {
                             if let messages = result.value {
                                 IMAPSession.appendToLog("[IDLE] Received \(messages.count) messages")
                                 observer.send(value: messages)
-                                latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
+                                // TODO This apparently causes trouble. Find a fix.
+                                // latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
                             } else {
                                 IMAPSession.appendToLog("[IDLE] Received notify but no new messages")
                             }

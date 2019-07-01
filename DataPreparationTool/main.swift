@@ -41,6 +41,7 @@ remoteHamSource.pipe(into: writer, classification: .Ham)
     .then(remoteSpamSource.pipe(into: writer, classification: .Spam))
     .startWithCompleted {
         print("done")
+        exit(0)
     }
 
 RunLoop.current.run()

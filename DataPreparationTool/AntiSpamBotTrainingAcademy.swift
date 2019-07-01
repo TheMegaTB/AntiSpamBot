@@ -97,7 +97,7 @@ class AntiSpamBotTrainingAcademy {
         return try MLDataTable(dictionary: rawData)
     }
 
-    private func printAccuracy(of classifier: MLTextClassifier, with testingData: MLDataTable) {
+    private func printAccuracy(of classifier: MLTextClassifier, with testingData: MLDataTable, textColumn: String) {
         // Training accuracy as a percentage
         let trainingAccuracy = (1.0 - classifier.trainingMetrics.classificationError) * 100
 
@@ -105,7 +105,7 @@ class AntiSpamBotTrainingAcademy {
         let validationAccuracy = (1.0 - classifier.validationMetrics.classificationError) * 100
 
         // Evaluation accuracy as a percentage
-        let evaluationMetrics = classifier.evaluation(on: testingData)
+        let evaluationMetrics = classifier.evaluation(on: testingData, textColumn: textColumn, labelColumn: "Type") //.evaluation(on: testingData)
         let evaluationAccuracy = (1.0 - evaluationMetrics.classificationError) * 100
 
         print("Accuracy on training data:\t\t", trainingAccuracy)
@@ -151,9 +151,9 @@ class AntiSpamBotTrainingAcademy {
 //        let imageClassifier = try trainImages()
 
         print("\n\n--- Subject classifier:")
-        printAccuracy(of: subjectClassifier, with: textTestingData)
+        printAccuracy(of: subjectClassifier, with: textTestingData, textColumn: "Subject")
         print("\n\n--- Body classifier:")
-        printAccuracy(of: bodyClassifier, with: textTestingData)
+        printAccuracy(of: bodyClassifier, with: textTestingData, textColumn: "Content")
 
         let classifierMetadata = MLModelMetadata(author: "Til Blechschmidt",
                                                  shortDescription: "A model trained to classify emails as spam/ham",
