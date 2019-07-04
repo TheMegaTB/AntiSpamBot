@@ -140,7 +140,7 @@ public class IMAPSession {
 
         self.fetchHeadersForContents(ofFolder: folder).startWithResult { result in
             if let messages = result.value {
-                latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
+                // latestKnownUID = messages.max(by: { $0.uid < $1.uid })?.uid ?? latestKnownUID
             }
 
             startNextIDLEOperation!()
